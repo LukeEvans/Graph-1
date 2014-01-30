@@ -38,15 +38,10 @@ public class ElasticSearch {
 	}
 
 	//================================================================================
-	// Find Confluence
+	// Find Twitter Confluence
 	//================================================================================
-	public void findConfluence(Confluence confluence) {
+	public void findTwitterConfluence(Confluence confluence) {
 		LinkedHashMap<String, ActionFuture<SearchResponse>> pending = new LinkedHashMap<String, ActionFuture<SearchResponse>>();
-
-		// Add news to list
-		for (String id : confluence.grabNewsIDs()) {
-			pending.put(id, client.prepareSearch("news").setQuery(QueryBuilders.queryString(id).defaultField("id")).execute());
-		}
 
 		// Add twitter to list
 		for (String id : confluence.grabTwitterIDs()) {
@@ -56,7 +51,8 @@ public class ElasticSearch {
 		// Combine them back together
 		for (Entry<String, ActionFuture<SearchResponse>> pendingEntry : pending.entrySet()) {
 			String id = pendingEntry.getKey();
-			Map<String, Object> value = getTopJsonFromSearch(pendingEntry.getValue().actionGet());
+			SearchResponse resp = pendingEntry.getValue().actionGet();
+			Map<String, Object> value = getTopJsonFromSearch(resp);
 
 			// Add node back to confluence
 			if (value != null) {
@@ -74,7 +70,8 @@ public class ElasticSearch {
 			Map<String, Object> top = null;
 			for(SearchHit hit: response.getHits()){
 				map = hit.getSource();
-				if(map.get("valid") != null && (Boolean) map.get("valid")){
+				String db = map.get("db").toString();
+				if(map.get("valid") != null && ((Boolean) map.get("valid") || db.equalsIgnoreCase("Twitter"))){
 					top = map;
 					break;
 				}
@@ -83,6 +80,7 @@ public class ElasticSearch {
 			return top;
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}

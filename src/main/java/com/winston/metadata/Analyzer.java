@@ -171,7 +171,8 @@ public class Analyzer {
 
 			metaData.confluence = fetcher.fetchConfluence(topic, related).get();
 			
-			elasticSearch.findConfluence(metaData.confluence);
+			elasticSearch.findTwitterConfluence(metaData.confluence);
+			mongo.findNewsConfluence(metaData.confluence);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
