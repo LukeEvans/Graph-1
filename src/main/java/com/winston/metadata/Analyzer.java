@@ -13,6 +13,7 @@ import com.winston.disambiguation.Disambiguator;
 import com.winston.elasticsearch.ElasticSearch;
 import com.winston.extraction.Extractor;
 import com.winston.graphdb.GraphManager;
+import com.winston.mongo.Mongo;
 
 @Component("analyzer")
 public class Analyzer {
@@ -36,6 +37,10 @@ public class Analyzer {
 	@Autowired
 	@Qualifier("elasticsearch")
 	ElasticSearch elasticSearch;
+	
+	@Autowired
+	@Qualifier("mongo")
+	Mongo mongo;
 	
 	//================================================================================
 	// Process
@@ -166,7 +171,8 @@ public class Analyzer {
 
 			metaData.confluence = fetcher.fetchConfluence(topic, related).get();
 			
-			elasticSearch.findConfluence(metaData.confluence);
+			elasticSearch.findTwitterConfluence(metaData.confluence);
+			mongo.findNewsConfluence(metaData.confluence);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
