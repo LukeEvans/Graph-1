@@ -1,12 +1,17 @@
 package com.winston.mongo;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.winston.metadata.Confluence;
 
 @Component("mongo")
 public class Mongo {
@@ -22,7 +27,7 @@ public class Mongo {
 			return mongoOps.findOne(query, class1,collection);	
 		}
 	}
-
+	
 	public Object find(Query query, Class<?> class1, String collection) {
 		synchronized (mongoOps) {
 			return mongoOps.find(query, class1, collection);
@@ -95,6 +100,23 @@ public class Mongo {
 		//Query query = new Query(
 		
 		return null;
+	}
+	
+	//================================================================================
+	// Find News Confluence
+	//================================================================================
+	public void findNewsConfluence(Confluence confluence) {
+		for (String id : confluence.grabNewsIDs()) {
+			Query query = new Query(Criteria.where("id").is(id));
+			BasicDBObject obj = (BasicDBObject) findOne(query, BasicDBObject.class, "winston-news");
+			
+			Map<String, Object> value = obj.toMap();
+			
+			value.remove("_id");
+			value.remove("_class");
+			value.put("id", id);
+			confluence.addNode(id, value);
+		}
 	}
 }
 
