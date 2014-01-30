@@ -58,9 +58,13 @@ public class ApiController {
 			String text = request.path("text").asText();
 			
 			boolean shallow = false;
+			boolean alt = false;
 			if (request != null && request.path("shallow") != null && !request.path("shallow").isMissingNode()) {
 				shallow = request.path("shallow").asBoolean();
 			}
+			if(request.has("alt"))
+				alt = request.path("alt").asBoolean();
+				
 			
 			// Start timer
 			ResponseObject responseObject = new ResponseObject();
@@ -68,12 +72,12 @@ public class ApiController {
 			
 			// Just look for entities and basic metadata
 			if (shallow) {
-				responseObject.addData(analyzer.shallowProcess(text));
+				responseObject.addData(analyzer.shallowProcess(text), alt);
 			}
 			
 			// Find entities, metadata, connections, and confluence
 			else {
-				responseObject.addData(analyzer.process(text));
+				responseObject.addData(analyzer.process(text), alt);
 			}
 			
 			// Stop timer
