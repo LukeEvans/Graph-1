@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.winston.youtube.YoutubeVideo;
 
 public class Confluence {
 
@@ -16,6 +17,7 @@ public class Confluence {
 	public ArrayList<Map<String, Object>> topic_news;
 	public ArrayList<Map<String, Object>> topic_twitter;
 	public ArrayList<Map<String, Object>> topic_facebook;
+	public ArrayList<YoutubeVideo> topic_youtube;
 	
 	// Related IDs
 	ArrayList<String> relatedNewsIds;
@@ -38,6 +40,7 @@ public class Confluence {
 		topic_news = new ArrayList<Map<String, Object>>();
 		topic_twitter = new ArrayList<Map<String, Object>>();
 		topic_facebook = new ArrayList<Map<String, Object>>();
+		topic_youtube = new ArrayList<YoutubeVideo>();
 		
 		relatedNewsIds = new ArrayList<String>();
 		relatedTwitterIds = new ArrayList<String>();
@@ -63,6 +66,7 @@ public class Confluence {
 		topic_news = new ArrayList<Map<String, Object>>();
 		topic_twitter = new ArrayList<Map<String, Object>>();
 		topic_facebook = new ArrayList<Map<String, Object>>();
+		topic_youtube = new ArrayList<YoutubeVideo>();
 		
 		related_news = new ArrayList<Map<String, Object>>();
 		related_twitter = new ArrayList<Map<String, Object>>();
@@ -162,6 +166,14 @@ public class Confluence {
 			related_facebook.add(node);
 			return;
 		}
+	}
+	
+
+	//================================================================================
+	// Add youtube video
+	//================================================================================
+	public void addVideoNode(YoutubeVideo video) {
+		topic_youtube.add(video);
 	}
 	
 	//================================================================================

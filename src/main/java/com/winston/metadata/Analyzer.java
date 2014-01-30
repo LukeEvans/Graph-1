@@ -14,6 +14,7 @@ import com.winston.elasticsearch.ElasticSearch;
 import com.winston.extraction.Extractor;
 import com.winston.graphdb.GraphManager;
 import com.winston.mongo.Mongo;
+import com.winston.youtube.Youtube;
 
 @Component("analyzer")
 public class Analyzer {
@@ -166,13 +167,19 @@ public class Analyzer {
 	public void grabConfluence(MetaData metaData) {
 
 		try {
-			ArrayList<String> topic = metaData.topicIDList();
+			ArrayList<String> topic = metaData.topicMIDList();
 			ArrayList<String> related = new ArrayList<String>();
 
 			metaData.confluence = fetcher.fetchConfluence(topic, related).get();
 			
+			// Twitter
 			elasticSearch.findTwitterConfluence(metaData.confluence);
+			
+			// News
 			mongo.findNewsConfluence(metaData.confluence);
+			
+			// YouTube
+			Youtube.topicVideos(metaData);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
