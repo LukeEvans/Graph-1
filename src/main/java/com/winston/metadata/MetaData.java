@@ -107,6 +107,23 @@ public class MetaData {
 	}
 	
 	//================================================================================
+	// Get list of topic mids
+	//================================================================================
+	public ArrayList<String> topicMIDList() {
+		ArrayList<String> topicIds = new ArrayList<String>();
+		
+		for (Keyword keyword : keywords) {
+			for (Candidate candidate : keyword.candidates) {
+				if (!topicIds.contains(candidate.grabMid())) {
+					topicIds.add(candidate.grabMid());
+				}
+			}
+		}
+		
+		return topicIds;
+	}
+	
+	//================================================================================
 	// Get list of topic ids
 	//================================================================================
 	public ArrayList<String> topicIDList() {
@@ -114,8 +131,8 @@ public class MetaData {
 		
 		for (Keyword keyword : keywords) {
 			for (Candidate candidate : keyword.candidates) {
-				if (!topicIds.contains(candidate.grabMid())) {
-					topicIds.add(candidate.grabMid());
+				if (!topicIds.contains(candidate.id)) {
+					topicIds.add(candidate.id);
 				}
 			}
 		}
