@@ -31,6 +31,7 @@ public class GraphManager {
 //			client = RexsterClientFactory.open("ec2-54-211-25-154.compute-1.amazonaws.com");
 			client = RexsterClientFactory.open("10.170.43.190");
 			
+			// Going to be used with multiple Rexster servers
 //			BaseConfiguration conf = new BaseConfiguration() {{
 //			    addProperty(RexsterClientTokens.CONFIG_HOSTNAME, "10.170.43.190,10.171.7.176");
 //			    addProperty(RexsterClientTokens.CONFIG_MESSAGE_RETRY_WAIT_MS, 0);
