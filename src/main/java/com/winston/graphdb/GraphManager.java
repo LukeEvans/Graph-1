@@ -28,8 +28,8 @@ public class GraphManager {
 	public void init() {
 
 		try {
-			client = RexsterClientFactory.open("ec2-54-211-25-154.compute-1.amazonaws.com");
-//			client = RexsterClientFactory.open("10.170.43.190");
+//			client = RexsterClientFactory.open("ec2-54-211-25-154.compute-1.amazonaws.com");
+			client = RexsterClientFactory.open("10.170.43.190");
 			
 			// Going to be used with multiple Rexster servers
 //			BaseConfiguration conf = new BaseConfiguration() {{
